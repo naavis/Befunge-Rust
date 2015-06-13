@@ -5,6 +5,10 @@ use std::fs::File;
 use std::io::BufReader;
 use std::io::Read;
 
+struct State {
+    program: [[u8; 80]; 25],
+}
+
 fn print_usage(program: &str, options: Options) {
     let brief = format!("Usage: {} [options] filename", program);
     print!("{}", options.usage(&brief));
@@ -46,4 +50,10 @@ fn main() {
 
     // Read Befunge source string from file
     let _ = reader.read_to_string(program_string);
+
+    // Break program into lines
+    let program_lines: Vec<&str> = program_string.lines().collect();
+
+    // Initialize program state; maybe implement Default trait?
+    let mut state = State { program: [[0u8; 80]; 25] };
 }
