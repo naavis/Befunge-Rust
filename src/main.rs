@@ -7,17 +7,25 @@ use std::io::Read;
 use std::default::Default;
 
 struct State {
-    program: [[u8; 80]; 25],
+    program: [[char; 80]; 25],
+    instruction_pointer: Point,
     stack: Vec<i32>,
 }
 
 impl Default for State {
     fn default() -> State {
         State {
-            program: [[0u8; 80]; 25],
+            program: [[' '; 80]; 25], // 32 is the ASCII code for space
             stack: Vec::new(),
+            instruction_pointer: Point::default(),
         }
     }
+}
+
+#[derive(Default)]
+struct Point {
+    x: u8,
+    y: u8,
 }
 
 fn print_usage(program: &str, options: Options) {
@@ -67,4 +75,13 @@ fn main() {
 
     // Initialize program state
     let mut state = State::default();
+
+    for (row, line) in program_lines.iter().enumerate() {
+        for (column, character) in line.chars().enumerate() {
+            if row >= 80 || row >= 25 {
+                panic!("Invalid source file!");
+            }
+            state.program[column][row] = character;
+        }
+    }
 }
