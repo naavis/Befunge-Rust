@@ -2,3 +2,5 @@
 name = "befunge-rust"
 version = "0.1.0"
 authors = ["Samuli Vuorinen <samuli.vuorinen@iki.fi>"]
+[dependencies]
+getopts = "0.2.11"
