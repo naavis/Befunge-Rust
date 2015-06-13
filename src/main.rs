@@ -4,9 +4,20 @@ use std::env;
 use std::fs::File;
 use std::io::BufReader;
 use std::io::Read;
+use std::default::Default;
 
 struct State {
     program: [[u8; 80]; 25],
+    stack: Vec<i32>,
+}
+
+impl Default for State {
+    fn default() -> State {
+        State {
+            program: [[0u8; 80]; 25],
+            stack: Vec::new(),
+        }
+    }
 }
 
 fn print_usage(program: &str, options: Options) {
@@ -54,6 +65,6 @@ fn main() {
     // Break program into lines
     let program_lines: Vec<&str> = program_string.lines().collect();
 
-    // Initialize program state; maybe implement Default trait?
-    let mut state = State { program: [[0u8; 80]; 25] };
+    // Initialize program state
+    let mut state = State::default();
 }
