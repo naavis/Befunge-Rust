@@ -11,6 +11,7 @@ struct State {
     instruction_pointer: Point,
     stack: Vec<i32>,
     direction: Direction,
+    running: bool,
 }
 
 impl Default for State {
@@ -20,19 +21,39 @@ impl Default for State {
             stack: Vec::new(),
             instruction_pointer: Point::default(),
             direction: Direction::default(),
+            running: true,
         }
     }
 }
 
 #[derive(Default)]
 struct Point {
-    x: u8,
-    y: u8,
+    x: usize,
+    y: usize,
+}
+
+impl Point {
+    fn move_point(&mut self, dir: &Direction) {
+        // Move instruction pointer
+        let mut new_x = (self.x as i32) + dir.x;
+        let mut new_y = (self.y as i32) + dir.y;
+
+        if new_x < 0 {
+            new_x = new_x + 80;
+        }
+
+        if new_y < 0 {
+            new_y = new_y + 25;
+        }
+
+        self.x = (new_x % 80) as usize;
+        self.y = (new_y % 25) as usize;
+    }
 }
 
 struct Direction {
-    x: i8,
-    y: i8,
+    x: i32,
+    y: i32,
 }
 
 impl Default for Direction {
@@ -92,6 +113,7 @@ fn main() {
     // Initialize program state
     let mut state = State::default();
 
+    // Read program characters into array
     for (row, line) in program_lines.iter().enumerate() {
         for (column, character) in line.chars().enumerate() {
             if row >= 80 || row >= 25 {
@@ -99,5 +121,39 @@ fn main() {
             }
             state.program[column][row] = character;
         }
+    }
+
+    // Run program
+    while state.running {
+        match state.program[state.instruction_pointer.x][state.instruction_pointer.y] {
+            '@' => state.running = false,
+            '<' => state.direction = Direction { x: -1, y: 0 },
+            '^' => state.direction = Direction { x: 0, y: 1 },
+            '>' => state.direction = Direction { x: 1, y: 0 },
+            'v' => state.direction = Direction { x: 0, y: -1 },
+            number_char @ '0' ... '9' => {
+                let number = number_char as i32;
+                state.stack.push(number);
+            },
+            '+' => {
+                let a = state.stack.pop().unwrap();
+                let b = state.stack.pop().unwrap();
+                state.stack.push(a + b);
+            }
+            '-' => {
+                let a = state.stack.pop().unwrap();
+                let b = state.stack.pop().unwrap();
+                state.stack.push(b - a);
+            },
+            '*' => {
+                let a = state.stack.pop().unwrap();
+                let b = state.stack.pop().unwrap();
+                state.stack.push(a * b);
+            },
+            '$' => { let _ = state.stack.pop(); },
+            _ => {},
+        }
+
+        state.instruction_pointer.move_point(&(state.direction));
     }
 }
