@@ -1,10 +1,12 @@
 extern crate getopts;
+extern crate rand;
 use getopts::Options;
 use std::env;
 use std::fs::File;
 use std::io::BufReader;
 use std::io::Read;
 use std::default::Default;
+use rand::Rng;
 
 struct State {
     program: [[char; 80]; 25],
@@ -123,6 +125,8 @@ fn main() {
         }
     }
 
+    let mut rng = rand::thread_rng();
+
     // Run program
     while state.running {
         match state.program[state.instruction_pointer.x][state.instruction_pointer.y] {
@@ -195,6 +199,16 @@ fn main() {
                 // Duplicate top of stack
                 let top_value = state.stack.last().unwrap().clone();
                 state.stack.push(top_value);
+            },
+            '?' => {
+                let random = rng.gen_range::<i32>(0, 4);
+                match random {
+                    0 => state.direction = Direction { x: 0, y: 1 },
+                    1 => state.direction = Direction { x: 1, y: 0 },
+                    2 => state.direction = Direction { x: 0, y: -1 },
+                    3 => state.direction = Direction { x: -1, y: 0 },
+                    _ => {},
+                }
             },
             _ => {},
         }
