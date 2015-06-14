@@ -126,31 +126,46 @@ fn main() {
     // Run program
     while state.running {
         match state.program[state.instruction_pointer.x][state.instruction_pointer.y] {
-            '@' => state.running = false,
-            '<' => state.direction = Direction { x: -1, y: 0 },
-            '^' => state.direction = Direction { x: 0, y: 1 },
-            '>' => state.direction = Direction { x: 1, y: 0 },
-            'v' => state.direction = Direction { x: 0, y: -1 },
+            '@' => state.running = false, // Stop running
+            '<' => state.direction = Direction { x: -1, y: 0 }, // Move left
+            '^' => state.direction = Direction { x: 0, y: 1 }, // Move up
+            '>' => state.direction = Direction { x: 1, y: 0 }, // Move right
+            'v' => state.direction = Direction { x: 0, y: -1 }, // Move down
             number_char @ '0' ... '9' => {
+                // Push number on stack
                 let number = number_char as i32;
                 state.stack.push(number);
             },
             '+' => {
+                // Add items on top of stack
                 let a = state.stack.pop().unwrap();
                 let b = state.stack.pop().unwrap();
                 state.stack.push(a + b);
             }
             '-' => {
+                // Subtract items on top of stack
                 let a = state.stack.pop().unwrap();
                 let b = state.stack.pop().unwrap();
                 state.stack.push(b - a);
             },
             '*' => {
+                // Multiply items on top of stack
                 let a = state.stack.pop().unwrap();
                 let b = state.stack.pop().unwrap();
                 state.stack.push(a * b);
             },
-            '$' => { let _ = state.stack.pop(); },
+            '$' => {
+                // Pop stack and discard
+                let _ = state.stack.pop();
+            },
+            '!' => {
+                // Logical NOT
+                let top_value = state.stack.pop().unwrap();
+                match top_value {
+                    0 => state.stack.push(1),
+                    _ => state.stack.push(0),
+                }
+            },
             _ => {},
         }
 
