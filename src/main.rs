@@ -201,6 +201,7 @@ fn main() {
                 state.stack.push(top_value);
             },
             '?' => {
+                // Move in random cardinal direction
                 let random = rng.gen_range::<i32>(0, 4);
                 match random {
                     0 => state.direction = Direction { x: 0, y: 1 },
