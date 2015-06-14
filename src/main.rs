@@ -191,6 +191,11 @@ fn main() {
                     state.stack.push(0);
                 }
             },
+            ':' => {
+                // Duplicate top of stack
+                let top_value = state.stack.last().unwrap().clone();
+                state.stack.push(top_value);
+            },
             _ => {},
         }
 
