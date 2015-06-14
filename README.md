@@ -17,7 +17,7 @@ The executable is placed in `target/release/`
 Befunge-Rust is run simply on the command line using
 
 ```
-befunge-rust.exe sourcefile
+befunge-rust.exe sourcefile.bf
 ```
 
 ## License
