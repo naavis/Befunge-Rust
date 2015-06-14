@@ -154,6 +154,21 @@ fn main() {
                 let b = state.stack.pop().unwrap();
                 state.stack.push(a * b);
             },
+            '/' => {
+                // Integer division
+                let a = state.stack.pop().unwrap();
+                let b = state.stack.pop().unwrap();
+                if a == 0 {
+                    panic!("Division by zero detected, and user input not supported yet!");
+                }
+                state.stack.push(b / a);
+            },
+            '%' => {
+                // Modulo items on top of stack
+                let a = state.stack.pop().unwrap();
+                let b = state.stack.pop().unwrap();
+                state.stack.push(b % a);
+            },
             '$' => {
                 // Pop stack and discard
                 let _ = state.stack.pop();
@@ -164,6 +179,16 @@ fn main() {
                 match top_value {
                     0 => state.stack.push(1),
                     _ => state.stack.push(0),
+                }
+            },
+            '`' => {
+                // Greater than
+                let a = state.stack.pop().unwrap();
+                let b = state.stack.pop().unwrap();
+                if b > a {
+                    state.stack.push(1);
+                } else {
+                    state.stack.push(0);
                 }
             },
             _ => {},
