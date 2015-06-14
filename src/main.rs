@@ -10,6 +10,7 @@ struct State {
     program: [[char; 80]; 25],
     instruction_pointer: Point,
     stack: Vec<i32>,
+    direction: Direction,
 }
 
 impl Default for State {
@@ -18,6 +19,7 @@ impl Default for State {
             program: [[' '; 80]; 25], // 32 is the ASCII code for space
             stack: Vec::new(),
             instruction_pointer: Point::default(),
+            direction: Direction::default(),
         }
     }
 }
@@ -26,6 +28,20 @@ impl Default for State {
 struct Point {
     x: u8,
     y: u8,
+}
+
+struct Direction {
+    x: i8,
+    y: i8,
+}
+
+impl Default for Direction {
+    fn default() -> Direction {
+        Direction {
+            x: 1,
+            y: 0,
+        }
+    }
 }
 
 fn print_usage(program: &str, options: Options) {
