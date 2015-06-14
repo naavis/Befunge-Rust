@@ -1,6 +1,24 @@
 # Befunge-Rust
 
-Befunge-Rust is a Befune interpreter written in Rust.
+Befunge-Rust is a Befunge-93 interpreter written in Rust.
+
+## Installation
+
+Befunge-Rust can be compiled using Cargo:
+
+```
+cargo build --release
+```
+
+The executable is placed in `target/release/`
+
+## Usage
+
+Befunge-Rust is run simply on the command line using
+
+```
+befunge-rust.exe sourcefile
+```
 
 ## License
 
