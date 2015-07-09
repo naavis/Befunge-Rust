@@ -1,6 +1,6 @@
 # Befunge-Rust
 
-Befunge-Rust is a Befunge-93 interpreter written in Rust.
+Befunge-Rust is a Befunge-93 interpreter written in Rust. _This is still a work in progress, and doesn't support all Befunge commands._
 
 ## Installation
 
